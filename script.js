@@ -1,7 +1,7 @@
 // model
 let app = document.getElementById('app')
 const characters = [
-    kain = { 'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 100, 'def': 7, 'speed': 1, 'ATB': Math.floor((Math.random() * 18) + 1), 'status': 'alive' },
+    kain = { 'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 20, 'def': 7, 'speed': 1, 'ATB': Math.floor((Math.random() * 18) + 1), 'status': 'alive' },
     rosa = { 'MaxHp': 280, 'Hp': 280, 'MaxMp': 120, 'Mp': 120, 'atk': 10, 'def': 5, 'speed': 0.8, 'ATB': Math.floor((Math.random() * 13) + 1), 'status': 'alive' },
     cecil = { 'MaxHp': 400, 'Hp': 400, 'MaxMp': 50, 'Mp': 50, 'atk': 25, 'def': 10, 'speed': 0.5, 'ATB': Math.floor((Math.random() * 15) + 1), 'status': 'alive' },
     rydia = { 'MaxHp': 250, 'Hp': 250, 'MaxMp': 120, 'Mp': 120, 'atk': 12, 'def': 2, 'speed': 0.6, 'ATB': Math.floor((Math.random() * 8) + 1), 'status': 'alive' },
