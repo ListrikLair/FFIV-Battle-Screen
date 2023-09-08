@@ -53,13 +53,27 @@
 
 #actions{
     width: 25vw;
+    font-size: 150%;
+    padding-left: 10px;
+    padding-top: 10px;
 }
+
+#actions > div:hover{
+    color: yellow;
+}
+
+#actions > div{
+    border: solid 2px lightblue;
+    width: 10vw;
+}
+
 #enemyList{
     width: 25vw;
     font-size: 200%;
     padding-left: 10px;
     padding-top: 10px;
 }
+
 #statScreen{
     display: flex;
     flex-direction: row;

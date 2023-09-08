@@ -1,31 +1,37 @@
 // model
 let app = document.getElementById('app')
 const characters = [
-    kain = {'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 25, 'def': 7, 'speed': 5, 'ATB': Math.floor((Math.random()*18)+1)},
-    rosa = {'MaxHp': 280, 'Hp': 280, 'MaxMp': 120, 'Mp': 120, 'atk': 10, 'def': 5, 'speed': 4, 'ATB': Math.floor((Math.random()*13)+1)},
-    cecil = {'MaxHp': 400, 'Hp': 400, 'MaxMp': 50, 'Mp': 50, 'atk': 15, 'def': 10, 'speed': 3, 'ATB': Math.floor((Math.random()*15)+1)},
-    rydia = {'MaxHp': 250, 'Hp': 250, 'MaxMp': 120, 'Mp': 120, 'atk': 20, 'def': 2, 'speed': 2.5, 'ATB': Math.floor((Math.random()*8)+1)},
-    goblin = {'MaxHp': 100, 'Hp': 100, 'MaxMp': 0, 'Mp': 0, 'atk': 20, 'def': 0, 'speed': 2, 'ATB': 0}
+    kain = { 'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 100, 'def': 7, 'speed': 1, 'ATB': Math.floor((Math.random() * 18) + 1), 'status': 'alive' },
+    rosa = { 'MaxHp': 280, 'Hp': 280, 'MaxMp': 120, 'Mp': 120, 'atk': 10, 'def': 5, 'speed': 0.8, 'ATB': Math.floor((Math.random() * 13) + 1), 'status': 'alive' },
+    cecil = { 'MaxHp': 400, 'Hp': 400, 'MaxMp': 50, 'Mp': 50, 'atk': 25, 'def': 10, 'speed': 0.5, 'ATB': Math.floor((Math.random() * 15) + 1), 'status': 'alive' },
+    rydia = { 'MaxHp': 250, 'Hp': 250, 'MaxMp': 120, 'Mp': 120, 'atk': 12, 'def': 2, 'speed': 0.6, 'ATB': Math.floor((Math.random() * 8) + 1), 'status': 'alive' },
+    goblin = { 'MaxHp': 100, 'atk': 20, 'def': 0, 'speed': 0.4, 'ATB': 0 },
+    goblinA = { 'Hp': 100, 'status': 'alive' },
+    goblinB = { 'Hp': 100, 'status': 'alive' },
+    goblinC = { 'Hp': 100, 'status': 'alive' },
 ]
 let actionVisibility = 'hidden';
 let actionHtml = '';
-const atbInterval = setInterval(atbIncrease, 800) 
+let atbInterval;
+let goblinImgA = './img/goblin.png';
+let goblinImgB = './img/goblin.png';
+let goblinImgC = './img/goblin.png';
 
 // view
-// startAtb();
+startAtb();
 updateView();
-function updateView(){
-app.innerHTML = /*HTML*/`
+function updateView() {
+    app.innerHTML = /*HTML*/`
     <div id="battlefield">
         <div id="enemies">
             <div></div>
             <div></div>
-            <div id="goblinA"><img src="./img/goblin.png" alt="" /></div>
-            <div id="goblinB"><img src="./img/goblin.png" alt="" /></div>
+            <div id="goblinA"><img src="${goblinImgA}" alt="" /></div>
+            <div id="goblinB"><img src="${goblinImgB}" alt="" /></div>
             <div></div>
             <div></div>
-            <div></div>
-            <div id="goblinC"><img src="./img/goblin.png" alt="" /></div>
+            <div><audio id="victory" class="sound" src="./audio/victoryFanfare.mp3"></audio></div>
+            <div id="goblinC"><img src="${goblinImgC}" alt="" /></div>
         </div>
         <div id="party">
             <div><img src="./img/kain.png" alt="" /></div>
@@ -80,100 +86,141 @@ app.innerHTML = /*HTML*/`
 }
 
 // controller
-function startAtb(){
-    setInterval(atbIncrease, 400)
+function startAtb() {
+    atbInterval = setInterval(atbIncrease, 80)
 }
 
-function stopAtb(){
-    clearInterval(atbIncrease);
+function stopAtb() {
+    clearInterval(atbInterval);
 }
 
-function atbIncrease(){
-    if (kain.ATB < 100){
+function atbIncrease() {
+    if (kain.ATB < 100) {
         kain.ATB += kain.speed;
     } else {
         kainTurn();
     }
-    if (rosa.ATB < 100){
+    if (rosa.ATB < 100) {
         rosa.ATB += rosa.speed;
     } else {
         rosaTurn();
     }
-    if (cecil.ATB < 100){
+    if (cecil.ATB < 100) {
         cecil.ATB += cecil.speed;
     } else {
         cecilTurn();
     }
-    if (rydia.ATB < 100){
+    if (rydia.ATB < 100) {
         rydia.ATB += rydia.speed;
     } else {
         rydiaTurn();
-    } 
-    if (goblin.ATB < 100){
+    }
+    if (goblin.ATB < 100) {
         goblin.ATB += goblin.speed;
     } else {
         goblin.ATB = 0;
-        monsterAttack();
-        setTimeout(monsterAttack, 500);
-        setTimeout(monsterAttack, 1000);
+        if (goblinA.status == 'alive') {
+            monsterAttack();
+        } if (goblinB.status == 'alive') {
+            setTimeout(monsterAttack, 500);
+        } if (goblinB.status == 'alive') {
+            setTimeout(monsterAttack, 1000);
+        }
     }
     updateView();
 }
 
-function kainTurn(){
+function kainTurn() {
     stopAtb();
     kain.ATB = 0;
     actionVisibility = 'visible';
     actionHtml = `
-        <button onclick="attack()">Attack</button> <br />
-        <button>Jump</button> <br />
-        <button>Defend</button> <br />
-        <button>Item</button>
+        <div onclick="attack(kain)">Attack</div> <br />
+        <div>Jump</div> <br />
+        <div>Defend</div> <br />
+        <div>Item</div>
     `;
     updateView();
 }
-function rosaTurn(){
+function rosaTurn() {
     stopAtb();
     rosa.ATB = 0;
     actionVisibility = 'visible';
     actionHtml = `
-        <button onclick="attack()">Attack</button> <br />
-        <button>Pray</button> <br />
-        <button>Defend</button> <br />
-        <button>Item</button>
+        <div onclick="attack(rosa)">Attack</div> <br />
+        <div>Pray</div> <br />
+        <div>Defend</div> <br />
+        <div>Item</div>
     `;
     updateView();
 }
-function cecilTurn(){
+function cecilTurn() {
     stopAtb();
     cecil.ATB = 0;
     actionVisibility = 'visible';
     actionHtml = `
-        <button onclick="attack()">Attack</button> <br />
-        <button>Shadow</button> <br />
-        <button>Defend</button> <br />
-        <button>Item</button>
+        <div onclick="attack(cecil)">Attack</div> <br />
+        <div>Shadow</div> <br />
+        <div>Defend</div> <br />
+        <div>Item</div>
     `;
     updateView();
 }
-function rydiaTurn(){
+function rydiaTurn() {
     stopAtb();
     rydia.ATB = 0;
     actionVisibility = 'visible';
     actionHtml = `
-        <button onclick="attack()">Attack</button> <br />
-        <button>Black Magic</button> <br />
-        <button>Defend</button> <br />
-        <button>Item</button>
+        <div onclick="attack(rydia)">Attack</div> <br />
+        <div>Black Magic</div> <br />
+        <div>Defend</div> <br />
+        <div>Item</div>
     `;
     updateView();
 }
 
-function attack(){
-
+function attack(character) {
+    if (goblinA.status == 'alive') {
+        goblinA.Hp -= character.atk;
+        if (goblinA.Hp <= 0) {
+            goblinA.Hp = 0;
+            goblinA.status = 'dead';
+            goblinImgA = '';
+        }
+    } else if (goblinB.status == 'alive') {
+        goblinB.Hp -= character.atk;
+        if (goblinB.Hp <= 0) {
+            goblinB.Hp = 0;
+            goblinB.status = 'dead';
+            goblinImgB = '';
+        }
+    } else if (goblinC.status == 'alive') {
+        goblinC.Hp -= character.atk;
+        if (goblinC.Hp <= 0) {
+            goblinC.Hp = 0;
+            goblinC.status = 'dead';
+            goblinImgC = '';
+            actionVisibility = 'hidden';
+            updateView();
+            playFanfare();
+            stopAtb();
+            return;
+        }   
+    }
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
 }
 
-function monsterAttack(){
-    attackedCharacterIndex = Math.floor((Math.random()*4));
+function monsterAttack() {
+    attackedCharacterIndex = Math.floor((Math.random() * 4));
     characters[attackedCharacterIndex].Hp -= goblin.atk - characters[attackedCharacterIndex].def;
+    if (characters[attackedCharacterIndex].Hp <= 0) {
+        characters[attackedCharacterIndex].Hp = 0;
+        characters[attackedCharacterIndex].status = 'dead';
+    }
+}
+
+function playFanfare() {
+    document.getElementById('victory').play();
 }
