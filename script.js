@@ -112,7 +112,10 @@ function atbIncrease(){
     if (goblin.ATB < 100){
         goblin.ATB += goblin.speed;
     } else {
+        goblin.ATB = 0;
         monsterAttack();
+        setTimeout(monsterAttack, 500);
+        setTimeout(monsterAttack, 1000);
     }
     updateView();
 }
@@ -171,6 +174,5 @@ function attack(){
 }
 
 function monsterAttack(){
-    atbPercentageG = 0;
-    Math.random
+    characters[Math.floor((Math.random()*4))].Hp -= goblin.atk;
 }
