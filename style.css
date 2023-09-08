@@ -12,10 +12,10 @@
 #enemies{
     display: grid;
     grid-template-columns: repeat(3, 8rem);
-    grid-template-rows: repeat(2, 8rem);
+    grid-template-rows: repeat(3, 8rem);
     position: absolute;
     left: 15%;
-    top: 35%
+    top: 28%
 }
 
 #enemies img{
@@ -40,6 +40,7 @@
     flex-direction: row;
     position: absolute;
     bottom: 0;
+    left: 0;
     height: 25vh;
 }
 
