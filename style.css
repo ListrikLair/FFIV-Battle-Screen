@@ -1,0 +1,95 @@
+#battlefield{
+    background-image: url(./img/background.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    float: left;
+    width: 98vw;
+    height: 99vh;
+    display: flex;
+}
+
+#enemies{
+    display: grid;
+    grid-template-columns: repeat(3, 8rem);
+    grid-template-rows: repeat(2, 8rem);
+    position: absolute;
+    left: 15%;
+    top: 35%
+}
+
+#enemies img{
+    width: 14rem;
+}
+
+#party{
+    display: grid;
+    grid-template-columns: repeat(2, 8rem);
+    grid-template-rows: repeat(4, 7rem);
+    position: absolute;
+    right: 20%;
+    top: 28%
+}
+
+#party img{
+    max-width: 8rem;
+}
+
+#battleMenu{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    height: 25vh;
+}
+
+#battleMenu > div{
+    background-color: rgba(0, 0, 87, 0.897);
+    color: white;
+    border: 5px solid gray;
+    border-radius: 10%;
+}
+
+#actions{
+    width: 25vw;
+}
+#enemyList{
+    width: 25vw;
+    font-size: 200%;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+#statScreen{
+    display: flex;
+    flex-direction: row;
+    width: 46.6vw;
+    font-size: 200%;
+    text-align: start;
+    padding-left: 2rem;
+    line-height: 6vh;
+}
+
+#names{
+    width: 20%;
+}
+
+#HpPools{
+    width: 20%;
+}
+
+#MpPools{
+    width: 20%;
+}
+
+#AtbGauge{
+    width: 30%;
+}
+
+#AtbGauge > div{
+    background-color: white;
+    /* background-image: linear-gradient(to right, green 20%, rgba(0,0,0,0) 0%); */
+    border: solid 1px black;
+    color: black;
+    height: 18%;
+    margin-top: 12px;
+}
