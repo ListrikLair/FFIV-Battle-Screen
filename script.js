@@ -1,18 +1,22 @@
 // model
 let app = document.getElementById('app')
 const characters = [
-    kain = { 'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 20, 'def': 7, 'speed': 1, 'ATB': Math.floor((Math.random() * 18) + 1), 'status': 'alive' },
-    rosa = { 'MaxHp': 280, 'Hp': 280, 'MaxMp': 120, 'Mp': 120, 'atk': 10, 'def': 5, 'speed': 0.8, 'ATB': Math.floor((Math.random() * 13) + 1), 'status': 'alive' },
-    cecil = { 'MaxHp': 400, 'Hp': 400, 'MaxMp': 50, 'Mp': 50, 'atk': 25, 'def': 10, 'speed': 0.5, 'ATB': Math.floor((Math.random() * 15) + 1), 'status': 'alive' },
-    rydia = { 'MaxHp': 250, 'Hp': 250, 'MaxMp': 120, 'Mp': 120, 'atk': 12, 'def': 2, 'speed': 0.6, 'ATB': Math.floor((Math.random() * 8) + 1), 'status': 'alive' },
+    kain = { 'MaxHp': 350, 'Hp': 350, 'MaxMp': 0, 'Mp': 0, 'atk': 20, 'def': 7, 'originalDef': 7, 'speed': 1, 'ATB': Math.floor((Math.random() * 18) + 1), 'status': 'alive' },
+    rosa = { 'MaxHp': 280, 'Hp': 280, 'MaxMp': 120, 'Mp': 120, 'atk': 10, 'def': 5, 'originalDef': 5, 'speed': 0.8, 'ATB': Math.floor((Math.random() * 13) + 1), 'status': 'alive' },
+    cecil = { 'MaxHp': 400, 'Hp': 400, 'MaxMp': 0, 'Mp': 0, 'atk': 25, 'def': 10, 'originalDef': 10, 'speed': 0.5, 'ATB': Math.floor((Math.random() * 15) + 1), 'status': 'alive' },
+    rydia = { 'MaxHp': 250, 'Hp': 250, 'MaxMp': 120, 'Mp': 120, 'atk': 12, 'def': 2, 'originalDef': 2, 'speed': 0.6, 'ATB': Math.floor((Math.random() * 8) + 1), 'status': 'alive' },
     goblin = { 'MaxHp': 100, 'atk': 20, 'def': 0, 'speed': 0.4, 'ATB': 0 },
     goblinA = { 'Hp': 100, 'status': 'alive' },
     goblinB = { 'Hp': 100, 'status': 'alive' },
     goblinC = { 'Hp': 100, 'status': 'alive' },
 ]
+let potions = 3;
 let actionVisibility = 'hidden';
 let actionHtml = '';
 let atbInterval;
+let goblinNameA = 'Goblin';
+let goblinNameB = 'Goblin';
+let goblinNameC = 'Goblin';
 let goblinImgA = './img/goblin.png';
 let goblinImgB = './img/goblin.png';
 let goblinImgC = './img/goblin.png';
@@ -46,9 +50,9 @@ function updateView() {
         <div id="battleMenu">
             <div id="actions" style="visibility: ${actionVisibility}">${actionHtml}</div>
             <div id="enemyList">
-                <div id="goblinAList">Goblin A</div>
-                <div id="goblinBList">Goblin B</div>
-                <div id="goblinCList">Goblin C</div>
+                <div id="goblinAList">${goblinNameA}</div>
+                <div id="goblinBList">${goblinNameB}</div>
+                <div id="goblinCList">${goblinNameC}</div>
             </div>
             <div id="statScreen">
                 <div id="names">
@@ -133,48 +137,52 @@ function atbIncrease() {
 function kainTurn() {
     stopAtb();
     kain.ATB = 0;
+    kain.def = kain.originalDef;
     actionVisibility = 'visible';
     actionHtml = `
         <div onclick="attack(kain)">Attack</div> <br />
-        <div>Jump</div> <br />
-        <div>Defend</div> <br />
-        <div>Item</div>
+        <div onclick="setUpJump()">Jump</div> <br />
+        <div onclick="defend(kain)">Defend</div> <br />
+        <div onclick="potion(kain)">Potion: ${potions}</div>
     `;
     updateView();
 }
 function rosaTurn() {
     stopAtb();
     rosa.ATB = 0;
+    rosa.def = rosa.originalDef;
     actionVisibility = 'visible';
     actionHtml = `
         <div onclick="attack(rosa)">Attack</div> <br />
-        <div>Pray</div> <br />
-        <div>Defend</div> <br />
-        <div>Item</div>
+        <div onclick="cura()">Cura</div> <br />
+        <div onclick="defend(rosa)">Defend</div> <br />
+        <div onclick="potion(rosa)">Potion: ${potions}</div>
     `;
     updateView();
 }
 function cecilTurn() {
     stopAtb();
     cecil.ATB = 0;
+    cecil.def = cecil.originalDef;
     actionVisibility = 'visible';
     actionHtml = `
         <div onclick="attack(cecil)">Attack</div> <br />
-        <div>Shadow</div> <br />
-        <div>Defend</div> <br />
-        <div>Item</div>
+        <div onclick="shadow()">Shadow</div> <br />
+        <div onclick="defend(cecil)">Defend</div> <br />
+        <div onclick="potion(cecil)">Potion: ${potions}</div>
     `;
     updateView();
 }
 function rydiaTurn() {
     stopAtb();
     rydia.ATB = 0;
+    rydia.def = rydia.originalDef;
     actionVisibility = 'visible';
     actionHtml = `
         <div onclick="attack(rydia)">Attack</div> <br />
-        <div>Black Magic</div> <br />
-        <div>Defend</div> <br />
-        <div>Item</div>
+        <div onclick="blackMagic()">Black Magic</div> <br />
+        <div onclick="defend(rydia)">Defend</div> <br />
+        <div onclick="potion(rydia)">Potion: ${potions}</div>
     `;
     updateView();
 }
@@ -186,6 +194,7 @@ function attack(character) {
             goblinA.Hp = 0;
             goblinA.status = 'dead';
             goblinImgA = '';
+            goblinNameA = '';
         }
     } else if (goblinB.status == 'alive') {
         goblinB.Hp -= character.atk;
@@ -193,6 +202,7 @@ function attack(character) {
             goblinB.Hp = 0;
             goblinB.status = 'dead';
             goblinImgB = '';
+            goblinNameB = '';
         }
     } else if (goblinC.status == 'alive') {
         goblinC.Hp -= character.atk;
@@ -200,16 +210,169 @@ function attack(character) {
             goblinC.Hp = 0;
             goblinC.status = 'dead';
             goblinImgC = '';
+            goblinNameC = '';
             actionVisibility = 'hidden';
             updateView();
             playFanfare();
             stopAtb();
             return;
-        }   
+        }
     }
     actionVisibility = 'hidden';
     startAtb();
     updateView();
+}
+
+function setUpJump() {
+    setTimeout(jump, 3000)
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
+}
+
+function jump() {
+    if (goblinA.status == 'alive') {
+        goblinA.Hp -= kain.atk * 2;
+        kain.ATB = 0;
+        if (goblinA.Hp <= 0) {
+            goblinA.Hp = 0;
+            goblinA.status = 'dead';
+            goblinImgA = '';
+            goblinNameA = '';
+        }
+    } else if (goblinB.status == 'alive') {
+        goblinB.Hp -= kain.atk * 2;
+        kain.ATB = 0;
+        if (goblinB.Hp <= 0) {
+            goblinB.Hp = 0;
+            goblinB.status = 'dead';
+            goblinImgB = '';
+            goblinNameB = '';
+        }
+    } else if (goblinC.status == 'alive') {
+        goblinC.Hp -= kain.atk * 2;
+        kain.ATB = 0;
+        if (goblinC.Hp <= 0) {
+            goblinC.Hp = 0;
+            goblinC.status = 'dead';
+            goblinImgC = '';
+            goblinNameC = '';
+            actionVisibility = 'hidden';
+            updateView();
+            playFanfare();
+            stopAtb();
+            return;
+        }
+    }
+    updateView();
+}
+
+function cura() {
+    if (rosa.Mp < 9) { return; }
+    else {
+        rosa.Mp -= 9;
+        kain.Hp += 25;
+        rosa.Hp += 25;
+        cecil.Hp += 25;
+        rydia.Hp += 25;
+    } if (kain.Hp > kain.MaxHp) {
+        kain.Hp = kain.MaxHp;
+    } if (rosa.Hp > rosa.MaxHp) {
+        rosa.Hp = rosa.MaxHp;
+    } if (cecil.Hp > cecil.MaxHp) {
+        cecil.Hp = cecil.MaxHp;
+    } if (rydia.Hp > rydia.MaxHp) {
+        rydia.Hp = rydia.MaxHp;
+    }
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
+}
+
+function shadow() {
+    if (cecil.Hp <= 50) { return; }
+    else {
+        cecil.Hp -= 50;
+        goblinA.Hp -= cecil.atk * 1.2;
+        goblinB.Hp -= cecil.atk * 1.2;
+        goblinC.Hp -= cecil.atk * 1.2;
+    } if (goblinA.Hp <= 0) {
+        goblinA.Hp = 0;
+        goblinA.status = 'dead';
+        goblinImgA = '';
+        goblinNameA = '';
+    } if (goblinB.Hp <= 0) {
+        goblinB.Hp = 0;
+        goblinB.status = 'dead';
+        goblinImgB = '';
+        goblinNameB = '';
+    } if (goblinC.Hp <= 0) {
+        goblinC.Hp = 0;
+        goblinC.status = 'dead';
+        goblinImgC = '';
+        goblinNameC = '';
+        actionVisibility = 'hidden';
+        updateView();
+        playFanfare();
+        stopAtb();
+        return;
+    }
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
+}
+
+function blackMagic() {
+    if (rydia.Mp < 15) { return; }
+    else {
+        rydia.Mp -= 15;
+        goblinA.Hp -= rydia.atk * 2;
+        goblinB.Hp -= rydia.atk * 2;
+        goblinC.Hp -= rydia.atk * 2;
+    } if (goblinA.Hp <= 0) {
+        goblinA.Hp = 0;
+        goblinA.status = 'dead';
+        goblinImgA = '';
+        goblinNameA = '';
+    } if (goblinB.Hp <= 0) {
+        goblinB.Hp = 0;
+        goblinB.status = 'dead';
+        goblinImgB = '';
+        goblinNameB = '';
+    } if (goblinC.Hp <= 0) {
+        goblinC.Hp = 0;
+        goblinC.status = 'dead';
+        goblinImgC = '';
+        goblinNameC = '';
+        actionVisibility = 'hidden';
+        updateView();
+        playFanfare();
+        stopAtb();
+        return;
+    }
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
+}
+
+function defend(character){
+    character.def *= 2;
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();
+}
+
+function potion(character){
+    if (potions > 0){
+        potions--;
+        character.Hp += 50;
+        if (character.Hp > character.MaxHp){
+            character.Hp = character.MaxHp;
+        }
+    } else {return;}
+    actionVisibility = 'hidden';
+    startAtb();
+    updateView();   
 }
 
 function monsterAttack() {

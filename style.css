@@ -102,7 +102,6 @@
 
 #AtbGauge > div{
     background-color: white;
-    /* background-image: linear-gradient(to right, green 20%, rgba(0,0,0,0) 0%); */
     border: solid 1px black;
     color: black;
     height: 18%;
